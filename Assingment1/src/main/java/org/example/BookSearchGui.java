@@ -2,50 +2,38 @@ package org.example;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.List;
 
 public class BookSearchGui extends JFrame {
 
-    JTextField searchField;
+    JTextField search = new JTextField();
     DefaultTableModel model;
 
     public BookSearchGui() {
         setTitle("Search Book");
-        setSize(800, 300);
-        setLayout(null);
+        setSize(700, 300);
 
-        JLabel lbl = new JLabel("Search (ID / Name / Author / Publication):");
-        lbl.setBounds(20, 20, 300, 25);
-        add(lbl);
+        model = new DefaultTableModel(
+                new String[]{"ID","Name","Author","Publication","Price"}, 0);
 
-        searchField = new JTextField();
-        searchField.setBounds(320, 20, 200, 25);
-        add(searchField);
+        JButton btn = new JButton("Search");
+        btn.addActionListener(e -> search());
 
-        JButton searchBtn = new JButton("Search");
-        searchBtn.setBounds(540, 20, 100, 25);
-        add(searchBtn);
-
-        String[] cols = {"ID", "Name", "Author", "Publication", "Date", "Price", "Qty", "Total"};
-        model = new DefaultTableModel(cols, 0);
-        JTable table = new JTable(model);
-
-        add(new JScrollPane(table)).setBounds(20, 60, 740, 180);
-
-        searchBtn.addActionListener(e -> search());
+        add(search, "North");
+        add(new JScrollPane(new JTable(model)), "Center");
+        add(btn, "South");
 
         setVisible(true);
     }
 
     private void search() {
         model.setRowCount(0);
-        List<Book> books = BookFileUtil.searchBooks(searchField.getText());
-
-        for (Book b : books) {
+        for (Book b : BookDAO.searchBooks(search.getText())) {
             model.addRow(new Object[]{
-                    b.getBookId(), b.getBookName(), b.getAuthorNames(),
-                    b.getPublication(), b.getDateOfPublication(),
-                    b.getPriceOfBook(), b.getTotalQuantityToOrder(), b.getTotalCost()
+                    b.getBookId(),
+                    b.getBookName(),
+                    b.getAuthorNames(),
+                    b.getPublication(),
+                    b.getPriceOfBook()
             });
         }
     }

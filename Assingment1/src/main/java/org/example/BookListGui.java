@@ -2,39 +2,28 @@ package org.example;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.List;
 
 public class BookListGui extends JFrame {
 
     public BookListGui() {
-
         setTitle("All Books");
         setSize(800, 300);
 
-        String[] cols = {
-                "ID", "Name", "Authors", "Publication",
-                "Date", "Price", "Qty", "Total Cost"
-        };
-
+        String[] cols = {"ID","Name","Author","Publication","Price","Qty"};
         DefaultTableModel model = new DefaultTableModel(cols, 0);
-        JTable table = new JTable(model);
 
-        List<Book> books = BookFileUtil.readBooks();
-
-        for (Book b : books) {
+        for (Book b : BookDAO.getAllBooks()) {
             model.addRow(new Object[]{
                     b.getBookId(),
                     b.getBookName(),
                     b.getAuthorNames(),
                     b.getPublication(),
-                    b.getDateOfPublication(),
                     b.getPriceOfBook(),
-                    b.getTotalQuantityToOrder(),
-                    b.getTotalCost()
+                    b.getTotalQuantityToOrder()
             });
         }
 
-        add(new JScrollPane(table));
+        add(new JScrollPane(new JTable(model)));
         setVisible(true);
     }
 }

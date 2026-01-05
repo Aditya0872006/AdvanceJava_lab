@@ -56,44 +56,41 @@ public class BookGui extends JFrame {
     /* ---------------- SAVE ---------------- */
     private void saveBook() {
         try {
-            Book book = createBookFromInput();
-            BookFileUtil.saveBook(book);
-            JOptionPane.showMessageDialog(this, "Book Saved Successfully");
+            BookDAO.insertBook(createBookFromInput());
+            JOptionPane.showMessageDialog(this, "Book Saved to Database");
             clearFields();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Invalid Input!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error Saving Book");
         }
     }
+
+
 
     /* ---------------- UPDATE ---------------- */
     private void updateBook() {
         try {
-            Book book = createBookFromInput();
-            boolean updated = BookFileUtil.updateBook(book);
-
+            boolean ok = BookDAO.updateBook(createBookFromInput());
             JOptionPane.showMessageDialog(this,
-                    updated ? "Book Updated Successfully" : "Book Not Found");
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Invalid Input!");
+                    ok ? "Book Updated" : "Book Not Found");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Update Failed");
         }
     }
+
 
     /* ---------------- DELETE ---------------- */
     private void deleteBook() {
         try {
-            int bookId = Integer.parseInt(id.getText());
-            boolean deleted = BookFileUtil.deleteBook(bookId);
-
+            int idVal = Integer.parseInt(id.getText());
+            boolean ok = BookDAO.deleteBook(idVal);
             JOptionPane.showMessageDialog(this,
-                    deleted ? "Book Deleted Successfully" : "Book Not Found");
-
-            if (deleted) clearFields();
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Enter valid Book ID!");
+                    ok ? "Book Deleted" : "Book Not Found");
+            if (ok) clearFields();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Invalid ID");
         }
     }
+
 
     /* ---------------- HELPER METHODS ---------------- */
     private Book createBookFromInput() {
