@@ -12,7 +12,7 @@ public class UDPClient {
     public static void main(String[] args) throws Exception {
 
         DatagramSocket clientSocket = new DatagramSocket();
-        InetAddress serverAddress = InetAddress.getByName("SERVER_IP"); // change IP
+        InetAddress serverAddress = InetAddress.getByName("localhost");
 
         byte[] buffer = new byte[BUFFER_SIZE];
         Scanner sc = new Scanner(System.in);
