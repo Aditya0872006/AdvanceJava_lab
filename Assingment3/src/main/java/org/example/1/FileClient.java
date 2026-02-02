@@ -7,7 +7,8 @@ public class FileClient {
     public static void main(String[] args) {
         try {
             // Connect to server
-            Socket socket = new Socket("SERVER_IP", 5000);
+            Socket socket = new Socket("localhost", 5000);
+
             System.out.println("Connected to server");
 
             // Input stream from server
